@@ -587,6 +587,7 @@ func RenderFile(filename string, context ...interface{}) string {
 	return tmpl.Render(context...)
 }
 
+
 func RenderFileInLayout(filename string, layoutFile string, context ...interface{}) string {
 	layoutTmpl, err := ParseFile(layoutFile)
 	if err != nil {
@@ -599,3 +600,25 @@ func RenderFileInLayout(filename string, layoutFile string, context ...interface
 	}
 	return tmpl.RenderInLayout(layoutTmpl, context...)
 }
+
+
+/* ECSoftware Specify Changes */
+func Render2(data string, context ...interface{}) string {
+	tmpl, err := ParseString2(data)
+	if err != nil {
+		return err.Error()
+	}
+	return tmpl.Render(context...)
+}
+func ParseString2(data string) (*Template, error) {
+	cwd := os.Getenv("CWD")
+	tmpl := Template{data, "<%", "%>", 0, 1, cwd, []interface{}{}}
+	err := tmpl.parse()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &tmpl, err
+}
+
